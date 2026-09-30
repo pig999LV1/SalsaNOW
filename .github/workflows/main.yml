@@ -25,8 +25,8 @@ jobs:
       - name: Build
         run: msbuild SalsaNOW/SalsaNOW.csproj /p:Configuration=Release /p:Platform=AnyCPU /v:minimal
 
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
         with:
-          name: SalsaNOW
-          path: SalsaNOW/bin/Release/SalsaNOW.exe
+          tag_name: latest
+          files: SalsaNOW/bin/Release/SalsaNOW.exe
