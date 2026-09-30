@@ -1,0 +1,32 @@
+name: Build SalsaNOW
+
+on:
+  push:
+    branches: [ master ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Setup NuGet
+        uses: NuGet/setup-nuget@v2
+
+      - name: Restore NuGet packages
+        run: nuget restore SalsaNOW.sln
+
+      - name: Build
+        run: msbuild SalsaNOW/SalsaNOW.csproj /p:Configuration=Release /p:Platform=AnyCPU /v:minimal
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: SalsaNOW
+          path: SalsaNOW/bin/Release/SalsaNOW.exe
